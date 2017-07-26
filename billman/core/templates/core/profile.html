@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'private-home' %}">BillMan - Billing Manager</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'private-home' %}">Home</a></li>
+            <li><a href="{% url 'profile-view' %}">Meu perfil</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<div class="page-header">
+    <h1>Dados do perfil  {{ status_message }}</h1>
+</div>
+<div class="panel panel-primary">
+<div class="panel-heading">
+  <h3 class="panel-title">Dados atuais</h3>
+</div>
+<div class="panel-body">
+    {{ profile_form.non_field_errors }}
+<form action="{% url 'profile-view' %}" method="post">
+    {% csrf_token %}
+{% for field in profile_form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}  <input type="submit" value="Salvar">
+</form>
+</div>
+</div>
+
+{% endblock %}
