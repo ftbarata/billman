@@ -1,8 +1,19 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from billman.authmanager.views import _login, _logout
-from billman.services_crud.models import CustomerDetails, CustomerPhone
+from billman.services_crud.models import CustomerDetails
 from billman.services_crud.formatters import decimal_to_brz
 from billman.services_crud.forms import ProfileForm
+
+
+# def _get_session_email_as_username(request):
+#     session_id = request.session.session_key
+#     session = Session.objects.get(session_key=session_id)
+#     uid = session.get_decoded().get('_auth_user_id')
+#     username = get_user_model().objects.get(pk=uid).email
+#     return username
+
+
 
 def public_home(request):
     return render(request, 'core/public_home.html')
@@ -10,7 +21,8 @@ def public_home(request):
 
 def private_home(request):
     if request.user.is_authenticated:
-        if CustomerDetails.objects.filter(email=request.user).exists():
+        total = 0
+        if CustomerDetails.objects.filter(email=request.user).exists() and CustomerDetails.objects.get(email=request.user).services.all().exists():
             user_services_queryset = CustomerDetails.objects.get(email=request.user).services.all()
             user_services = []
             total = 0
@@ -56,6 +68,7 @@ def logout(request):
 def profile_view(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
+            print(request.POST)
             profile_form = ProfileForm(request.POST)
             if profile_form.is_valid():
                 profile_form.save()
@@ -63,10 +76,18 @@ def profile_view(request):
                 return render(request, 'core/profile.html', {'profile_form': profile_form, 'status_message': 'Cadastro atualizado.'})
             else:
                 print('erros: {}'.format(profile_form.errors))
-                profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
-                return render(request, 'core/profile.html', {'profile_form': profile_form, 'errors': profile_form.errors})
+                try:
+                    profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
+                except ObjectDoesNotExist:
+                    profile_form = ProfileForm()
+                finally:
+                    return render(request, 'core/profile.html', {'profile_form': profile_form, 'errors': profile_form.errors})
         else:
-            profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
-            return render(request, 'core/profile.html', {'profile_form': profile_form})
+            try:
+                profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
+            except ObjectDoesNotExist:
+                profile_form = ProfileForm(instance=CustomerDetails.objects.create(email=request.user))
+            finally:
+                return render(request, 'core/profile.html', {'profile_form': profile_form})
     else:
         return render(request, 'core/login.html', {'status_message': 'Você não está logado. Faça o login primeiro.'})
