@@ -3,7 +3,10 @@ from billman.authmanager.views import _login, _logout
 from billman.services_crud.models import CustomerDetails
 from billman.services_crud.formatters import decimal_to_brz
 from billman.services_crud.forms import ProfileForm
-
+from .models import Contacts
+from django.contrib.auth.models import Group
+from billman.authmanager.models import User
+from django.conf import settings
 
 # def _get_session_email_as_username(request):
 #     session_id = request.session.session_key
@@ -79,5 +82,20 @@ def profile_view(request):
         else:
             profile_form = ProfileForm(instance=instance, initial={'email': request.user})
         return render(request, 'core/profile.html', {'profile_form': profile_form})
+    else:
+        return render(request, 'core/login.html', {'status_message': 'Você não está logado. Faça o login primeiro.'})
+
+
+def contacts_view(request):
+    if request.user.is_authenticated:
+        try:
+            contact_text = []
+            for user in User.objects.all().filter(groups__name=settings.ADMINS_GROUP_NAME):
+                contact_text.append((user.email, Contacts.objects.get(email=user.email).contacts))
+        except Contacts.DoesNotExist:
+            contact_text = None
+        finally:
+            print(contact_text)
+            return render(request, 'core/contacts.html', {'contact_text': contact_text})
     else:
         return render(request, 'core/login.html', {'status_message': 'Você não está logado. Faça o login primeiro.'})

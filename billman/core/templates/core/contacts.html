@@ -1,7 +1,6 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-
 <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -12,21 +11,33 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand"  href="{% url 'public_home' %}">BillMan - Billing Manager</a>
+          <a class="navbar-brand" href="{% url 'private-home' %}">BillMan - Billing Manager</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'public_home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
+            <li class="active"><a href="{% url 'private-home' %}">Home</a></li>
+            <li><a href="{% url 'profile-view' %}">Meu perfil</a></li>
+            <li><a href="{% url 'contacts-view' %}">Contato</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    </br>
+<div class="page-header">
+    <h1>Contatos dos administradores</h1>
+</div>
 
-    <h3>{{ status_message }}</h3>
-    </br>
-    <h2>Home page pública.</h2>
-<div class="container theme-showcase" role="main"></div>
+{% for item in contact_text %}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Email do administrador: {{ item.0 }}</h3>
+    </div>
+    <div class="panel-body">
+      <strong>{{ item.1|linebreaks }}</strong>
+    </div>
+</div>
+
+{% endfor %}
 
 {% endblock %}
