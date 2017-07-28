@@ -72,7 +72,6 @@ def profile_view(request):
             instance = None
 
         if request.method == 'POST':
-
             profile_form = ProfileForm(request.POST, instance=instance)
             if profile_form.is_valid():
                 profile_form.save()

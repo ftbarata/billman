@@ -10,7 +10,7 @@ class ProfileForm(forms.ModelForm):
         widgets = {
         'email': forms.TextInput(attrs={'readonly': 'readonly','size':'60', 'style': 'border: transparent'}),
         'name': forms.TextInput(attrs={'size': '100'}),
-        'phones': forms.CheckboxSelectMultiple(),
+        'phones': forms.TextInput(attrs={'size': '100'}),
         'cpf': forms.TextInput(attrs={'size':'14'}),
         'cnpj': forms.TextInput(attrs={'size': '18'}),
         'country_abbreviation': forms.TextInput(attrs={'size': '2'}),

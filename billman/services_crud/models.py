@@ -33,19 +33,10 @@ class CustomerDetails(models.Model):
     city = models.CharField('Cidade', max_length=60, null=True, blank=True)
     full_address = models.CharField('Endereço completo com CEP', max_length=500, null=True, blank=True)
     responsibles = models.CharField('Responsáveis', max_length=300, null=True, blank=True)
-    phones = models.ManyToManyField('CustomerPhone', verbose_name='Telefones', blank=True)
+    phones = models.CharField('Telefones', max_length=100, blank=True)
     services = models.ManyToManyField('Service', blank=True)
 
     def __str__(self):
         return self.email
 
 
-class CustomerPhone(models.Model):
-    phone = models.CharField('Telefone', max_length=15)
-
-    class Meta:
-        verbose_name = 'Telefone'
-        verbose_name_plural = 'Telefones'
-
-    def __str__(self):
-        return self.phone
