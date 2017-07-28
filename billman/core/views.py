@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from billman.authmanager.views import _login, _logout
 from billman.services_crud.models import CustomerDetails
@@ -67,27 +66,19 @@ def logout(request):
 
 def profile_view(request):
     if request.user.is_authenticated:
+        try:
+            instance = CustomerDetails.objects.get(email=request.user)
+        except CustomerDetails.DoesNotExist:
+            instance = None
+
         if request.method == 'POST':
-            print(request.POST)
-            profile_form = ProfileForm(request.POST)
+
+            profile_form = ProfileForm(request.POST, instance=instance)
             if profile_form.is_valid():
                 profile_form.save()
-                profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
-                return render(request, 'core/profile.html', {'profile_form': profile_form, 'status_message': 'Cadastro atualizado.'})
-            else:
-                print('erros: {}'.format(profile_form.errors))
-                try:
-                    profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
-                except ObjectDoesNotExist:
-                    profile_form = ProfileForm()
-                finally:
-                    return render(request, 'core/profile.html', {'profile_form': profile_form, 'errors': profile_form.errors})
+                return render(request, 'core/profile_updated_success.html')
         else:
-            try:
-                profile_form = ProfileForm(instance=CustomerDetails.objects.get(email=request.user))
-            except ObjectDoesNotExist:
-                profile_form = ProfileForm(instance=CustomerDetails.objects.create(email=request.user))
-            finally:
-                return render(request, 'core/profile.html', {'profile_form': profile_form})
+            profile_form = ProfileForm(instance=instance, initial={'email': request.user})
+        return render(request, 'core/profile.html', {'profile_form': profile_form})
     else:
         return render(request, 'core/login.html', {'status_message': 'Você não está logado. Faça o login primeiro.'})
