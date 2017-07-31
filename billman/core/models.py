@@ -9,5 +9,5 @@ class Contacts(models.Model):
         return self.email
 
     class Meta:
-        verbose_name = 'Contato'
-        verbose_name_plural = 'Contatos'
+        verbose_name = 'Contato do administrador'
+        verbose_name_plural = 'Contatos dos administradores'

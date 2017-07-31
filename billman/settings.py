@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'billman.core',
     'billman.services_crud',
     'billman.authmanager',
+    'billman.billing_control',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,3 +125,11 @@ STATIC_URL = '/static/'
 
 
 ADMINS_GROUP_NAME='admins'
+
+# GMAIL SMTP SETTINGS
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+EMAIL_HOST = 'smtp.gmail.com'
+DEFAULT_FROM_EMAIL = '***'
+EMAIL_HOST_USER = '***'
+EMAIL_HOST_PASSWORD = '***'

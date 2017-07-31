@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+
+    <title>BillMan</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="{% static 'dist/css/bootstrap-theme.min.css' %}" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{% static 'assets/css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'theme.css' %}" rel="stylesheet">
+    <link href="{% static 'signin.css' %}" rel="stylesheet">
+
+  </head>
+
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Cobrança</h1>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Fatura</h3>
+    </div>
+    <div class="panel-body">
+        <p>{{ message }}</p>
+    </div>
+    <div class="alert alert-danger">
+            <strong>Teste</strong>
+    </div>
+</div>
+{% endblock %}
