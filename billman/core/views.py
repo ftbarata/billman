@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from billman.authmanager.views import _login, _logout
-from billman.services_crud.models import CustomerDetails
+from billman.services_crud.models import CustomerDetails, Service
 from billman.services_crud.formatters import decimal_to_brz
 from billman.services_crud.forms import ProfileForm
 from .models import Contacts
@@ -24,8 +24,8 @@ def public_home(request):
 def private_home(request):
     if request.user.is_authenticated:
         total = 0
-        if CustomerDetails.objects.filter(email=request.user).exists() and CustomerDetails.objects.get(email=request.user).services.all().exists():
-            user_services_queryset = CustomerDetails.objects.get(email=request.user).services.all()
+        if CustomerDetails.objects.filter(email=request.user).exists() and Service.objects.filter(customer__email=request.user).exists():
+            user_services_queryset = Service.objects.all().filter(customer__email=request.user)
             user_services = []
             total = 0
             for i in user_services_queryset:
