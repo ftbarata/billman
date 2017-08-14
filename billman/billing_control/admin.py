@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import BillingControl, ScheduledPrice
 
-# Register your models here.
+admin.site.register(BillingControl)
+admin.site.register(ScheduledPrice)

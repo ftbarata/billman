@@ -3,6 +3,7 @@ from django.core import validators
 
 
 class Service(models.Model):
+    customer = models.ForeignKey('CustomerDetails', verbose_name='Cliente', on_delete=models.CASCADE)
     description = models.CharField('Descrição', max_length=500)
     unit_price = models.FloatField('Valor unitário', null=True, blank=True)
     count = models.IntegerField('Quantidade', null=True, blank=True)
@@ -35,9 +36,12 @@ class CustomerDetails(models.Model):
     full_address = models.CharField('Endereço completo com CEP', max_length=500, null=True, blank=True)
     responsibles = models.CharField('Responsáveis', max_length=300, null=True, blank=True)
     phones = models.CharField('Telefones', max_length=100, blank=True)
+<<<<<<< HEAD
     services = models.ManyToManyField('Service', blank=True)
     billing_send_date = models.PositiveIntegerField('Dia de envio da fatura', validators=[validators.MaxValueValidator(28)], null=True, blank=True)
     billing_due_date = models.PositiveIntegerField('Dia de vencimento da fatura', validators=[validators.MaxValueValidator(28)], null=True, blank=True)
+=======
+>>>>>>> c06ba7b08eade3f69232c589ec9559e6d8128fb6
 
     def __str__(self):
         return self.email
