@@ -4,7 +4,6 @@ from billman.services_crud.models import CustomerDetails
 from billman.services_crud.formatters import decimal_to_brz
 from billman.services_crud.forms import ProfileForm
 from .models import Contacts
-from django.contrib.auth.models import Group
 from billman.authmanager.models import User
 from django.conf import settings
 
@@ -43,7 +42,7 @@ def private_home(request):
             user_empty_services = True
             user_services = []
 
-        return render(request, 'core/private_home.html', {'user_services': user_services, 'user_empty_services': user_empty_services, 'total': total})
+        return render(request, 'core/private_home.html', {'user_services': user_services, 'user_empty_services': user_empty_services, 'total': decimal_to_brz(total)})
     else:
         return render(request, 'core/login.html', {'status_message': 'Você não está logado. Faça o login primeiro.'})
 

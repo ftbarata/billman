@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from billman.core.send_mail import send_unique_email
+from django.utils import timezone
+from billman.services_crud.models import CustomerDetails
 
 
 class Command(BaseCommand):
@@ -8,17 +10,17 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
 
         parser.add_argument(
-            'subject',
+            '--subject',
             help='Subject of the mail'
         )
 
         parser.add_argument(
-            'body',
+            '--body',
             help='Body content of the mail'
         )
 
         parser.add_argument(
-            'recipient',
+            '--recipient',
             help='recipient of the mail'
         )
 
@@ -36,5 +38,10 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        # self.stdout.write('options used: {}'.format(options))
-        send_unique_email(options['subject'], options['body'], options['recipient'])
+        for i in CustomerDetails.objects.all():
+            if i.services.all().exists():
+                for j in i.services.all():
+                    print(j.description)
+            print(i.email, i.billing_send_date)
+
+        # send_unique_email(options['subject'], options['body'], options['recipient'])

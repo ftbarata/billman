@@ -22,18 +22,5 @@ def decimal_to_brz(value=None):
                 else:
                     final_value += char
 
-
-        decimal_count = 0
-        start_count = False
-        for i in final_value:
-            if i == '.':
-                start_count = True
-            if i != '.' and start_count:
-                decimal_count += 1
-
-        if decimal_count > 2:
-            slice = decimal_count - 2
-            return float(final_value[0:-slice])
-        else:
-            return float(final_value)
+        return round(float(final_value), 2)
 
