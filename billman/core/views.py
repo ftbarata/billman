@@ -4,18 +4,9 @@ from billman.services_crud.models import CustomerDetails, Service
 from billman.services_crud.formatters import decimal_to_brz
 from billman.services_crud.forms import ProfileForm
 from .models import Contacts
-from django.contrib.auth.models import Group
+from billman.billing_control.models import BillingHistory
 from billman.authmanager.models import User
 from django.conf import settings
-
-# def _get_session_email_as_username(request):
-#     session_id = request.session.session_key
-#     session = Session.objects.get(session_key=session_id)
-#     uid = session.get_decoded().get('_auth_user_id')
-#     username = get_user_model().objects.get(pk=uid).email
-#     return username
-
-
 
 def public_home(request):
     return render(request, 'core/public_home.html')
@@ -23,6 +14,11 @@ def public_home(request):
 
 def private_home(request):
     if request.user.is_authenticated:
+        if BillingHistory.objects.all().filter(customer__email=request.user).exists():
+            billing_history = BillingHistory.objects.all().filter(customer__email=request.user)
+        else:
+            billing_history = None
+
         total = 0
         if CustomerDetails.objects.filter(email=request.user).exists() and Service.objects.filter(customer__email=request.user).exists():
             user_services_queryset = Service.objects.all().filter(customer__email=request.user)
@@ -43,7 +39,7 @@ def private_home(request):
             user_empty_services = True
             user_services = []
 
-        return render(request, 'core/private_home.html', {'user_services': user_services, 'user_empty_services': user_empty_services, 'total': total})
+        return render(request, 'core/private_home.html', {'user_services': user_services, 'user_empty_services': user_empty_services, 'total': total, 'billing_history': billing_history})
     else:
         return render(request, 'core/login.html', {'status_message': 'Você não está logado. Faça o login primeiro.'})
 

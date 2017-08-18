@@ -16,7 +16,7 @@ class BillingControl(models.Model):
         verbose_name_plural = 'Controles de Cobrança'
 
     def __str__(self):
-        return (self.customer.email + ' - ' + self.service.description)
+        return self.customer.email + ' - ' + self.service.description
 
 
 class ScheduledPrice(models.Model):
@@ -33,8 +33,16 @@ class ScheduledPrice(models.Model):
         verbose_name_plural = 'Agendamentos de Cobranças'
 
     def __str__(self):
-        return (self.customer.email + ' - ' + self.description)
+        return self.customer.email + ' - ' + self.description
 
 
-class MailNotificationControl(models.Model):
-    pass
+class BillingHistory(models.Model):
+    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente')
+    description = models.CharField('Descrição', max_length=500)
+    value = models.FloatField('Valor', null=True, blank=True)
+    date = models.DateField('Data', null=True, blank=True)
+    created_at = models.DateField('Criado em', auto_now_add=True)
+    updated_at = models.DateField('Atualizado em', auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']

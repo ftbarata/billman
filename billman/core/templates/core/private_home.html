@@ -67,4 +67,46 @@
     </div>
 {% endif %}
 
+{% if not billing_history %}
+    <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="alert alert-warning" role="alert">
+        <strong>Informação:</strong> Sem histórico financeiro no momento.
+      </div>
+      </div>
+    </div>
+{% else %}
+    <div class="page-header">
+        <h1>Histórico</h1>
+      </div>
+    <div class="row">
+        <div class="col-md-6">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Data</th>
+                <th>Atualizado em</th>
+                <th>Criado em</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for item in billing_history %}
+              <tr>
+                <td>{{ item.description }}</td>
+                <td>{{ item.value }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.created_at }}</td>
+                <td>{{ item.updated_at }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </div>
+{% endif %}
+
+
 {% endblock %}

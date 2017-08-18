@@ -3,8 +3,7 @@ from django.core.management.base import BaseCommand
 from billman.services_crud.formatters import decimal_to_brz
 from billman.core.send_mail import send_unique_email
 from billman.billing_control.models import BillingControl, ScheduledPrice
-from billman.services_crud.models import CustomerDetails, Service
-
+from billman.services_crud.models import CustomerDetails
 
 class Command(BaseCommand):
     help = 'Sends bill mail alerts and/or the bill itself'
