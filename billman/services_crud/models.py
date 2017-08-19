@@ -1,4 +1,5 @@
 from django.db import models
+from django.core import validators
 
 
 class Service(models.Model):
@@ -30,11 +31,14 @@ class CustomerDetails(models.Model):
     cpf = models.CharField(max_length=14, null=True, blank=True)
     cnpj = models.CharField(max_length=18, null=True, blank=True)
     country_abbreviation = models.CharField('País(Sigla)', max_length=2, null=True, blank=True)
-    state_abbreviation = models.CharField('Estado(Sigla)', max_length=20, null=True, blank=True)
+    state_abbreviation = models.CharField('Estado(Sigla)', max_length=2, null=True, blank=True)
     city = models.CharField('Cidade', max_length=60, null=True, blank=True)
     full_address = models.CharField('Endereço completo com CEP', max_length=500, null=True, blank=True)
     responsibles = models.CharField('Responsáveis', max_length=300, null=True, blank=True)
     phones = models.CharField('Telefones', max_length=100, blank=True)
+    services = models.ManyToManyField('Service', blank=True)
+    billing_send_date = models.PositiveIntegerField('Dia de envio da fatura', validators=[validators.MaxValueValidator(28)], null=True, blank=True)
+    billing_due_date = models.PositiveIntegerField('Dia de vencimento da fatura', validators=[validators.MaxValueValidator(28)], null=True, blank=True)
 
     def __str__(self):
         return self.email

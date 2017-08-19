@@ -18,4 +18,6 @@ class ProfileForm(forms.ModelForm):
         'city': forms.TextInput(attrs={'size': '60'}),
         'full_address': forms.TextInput(attrs={'size': '200'}),
         'responsibles': forms.TextInput(attrs={'size': '200'}),
+        'billing_send_date': forms.TextInput(attrs={'size': '2'}),
+        'billing_due_date': forms.TextInput(attrs={'size': '2', 'readonly': 'readonly', 'style': 'border: transparent'})
         }
