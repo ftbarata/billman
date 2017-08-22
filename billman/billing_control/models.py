@@ -7,8 +7,6 @@ class BillingControl(models.Model):
     service = models.ForeignKey(Service, verbose_name='Serviço', on_delete=models.CASCADE)
     attach_bill = models.BooleanField(default=False, verbose_name='Gerar boleto')
     active = models.BooleanField(verbose_name='Ativo', default=False)
-    send_montly_day = models.DateField('Data de envio')
-    duedate = models.DateField('Vencimento')
     paid = models.BooleanField(verbose_name='Pago', default=False)
 
     class Meta:
@@ -24,8 +22,8 @@ class ScheduledPrice(models.Model):
     send_date = models.DateField('Data de envio')
     duedate = models.DateField('Vencimento')
     description = models.CharField('Descrição', max_length=500)
-    unit_price = models.FloatField('Valor unitário', null=True, blank=True)
-    count = models.IntegerField('Quantidade', null=True, blank=True)
+    unit_price = models.FloatField('Valor unitário')
+    count = models.IntegerField('Quantidade')
     attach_bill = models.BooleanField(default=False, verbose_name='Gerar boleto')
 
     class Meta:
@@ -46,3 +44,6 @@ class BillingHistory(models.Model):
 
     class Meta:
         ordering = ['-updated_at']
+        verbose_name = 'Histórico de Cobranças'
+        verbose_name_plural = 'Históricos de Cobranças'
+

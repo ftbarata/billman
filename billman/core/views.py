@@ -8,6 +8,7 @@ from billman.billing_control.models import BillingHistory
 from billman.authmanager.models import User
 from django.conf import settings
 
+
 def public_home(request):
     return render(request, 'core/public_home.html')
 
@@ -20,21 +21,25 @@ def private_home(request):
             billing_history = None
 
         total = 0
-        if CustomerDetails.objects.filter(email=request.user).exists() and Service.objects.filter(customer__email=request.user).exists():
-            user_services_queryset = Service.objects.all().filter(customer__email=request.user)
-            user_services = []
-            total = 0
-            for i in user_services_queryset:
-                description = i.description
-                count = i.count
-                unit_price = decimal_to_brz(i.unit_price)
-                user_services.append({'description':description, 'count':count, 'unit_price':unit_price, 'subtotal': decimal_to_brz(unit_price * count)})
-                total += unit_price * count
+        if CustomerDetails.objects.filter(email=request.user).exists():
+            if CustomerDetails.objects.get(email=request.user).services.all().exists():
+                user_services_queryset = CustomerDetails.objects.get(email=request.user).services.all()
+                user_services = []
+                total = 0
+                for i in user_services_queryset:
+                    description = i.description
+                    count = i.count
+                    unit_price = decimal_to_brz(i.unit_price)
+                    user_services.append({'description':description, 'count':count, 'unit_price':unit_price, 'subtotal': decimal_to_brz(unit_price * count)})
+                    total += unit_price * count
 
-            if user_services_queryset.count() == 0:
-                user_empty_services = True
+                if user_services_queryset.count() == 0:
+                    user_empty_services = True
+                else:
+                    user_empty_services = False
             else:
-                user_empty_services = False
+                user_empty_services = True
+                user_services = []
         else:
             user_empty_services = True
             user_services = []

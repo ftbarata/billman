@@ -1,7 +1,10 @@
 {% extends 'core/base.html' %}
+{% load l10n %}
 
 {% block content %}
 <!-- Fixed navbar -->
+{% localize on %}
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -97,9 +100,9 @@
               <tr>
                 <td>{{ item.description }}</td>
                 <td>{{ item.value }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.created_at }}</td>
-                <td>{{ item.updated_at }}</td>
+                <td>{{ item.date|date:"D, d/M/Y" }}</td>
+                <td>{{ item.created_at|date:"D, d/M/Y" }}</td>
+                <td>{{ item.updated_at|date:"D, d/M/Y" }}</td>
               </tr>
             {% endfor %}
             </tbody>
@@ -108,5 +111,6 @@
     </div>
 {% endif %}
 
+{% endlocalize %}
 
 {% endblock %}
