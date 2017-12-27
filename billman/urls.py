@@ -1,13 +1,13 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib import admin
 from .core.views import public_home, login, private_home, logout, profile_view, contacts_view
 
 urlpatterns = [
-    url(r'^login/$', login, name='login'),
-    url(r'^logout/$', logout, name='logout'),
-    url(r'^profile/$', profile_view, name='profile-view'),
-    url(r'^private-home/$', private_home, name='private-home'),
-    url(r'^$', public_home, name='public_home'),
-    url(r'^admin/', admin.site.urls),
-    url(r'^contacts-view/$', contacts_view, name='contacts-view'),
+    path('login/', login, name='login'),
+    path('logout/', logout, name='logout'),
+    path('profile/', profile_view, name='profile-view'),
+    path('private-home/', private_home, name='private-home'),
+    path('', public_home, name='public_home'),
+    path('admin/', admin.site.urls),
+    path('contacts-view/', contacts_view, name='contacts-view'),
 ]

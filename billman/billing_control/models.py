@@ -3,7 +3,7 @@ from billman.services_crud.models import CustomerDetails, Service
 
 
 class BillingControl(models.Model):
-    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente')
+    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente', on_delete=models.CASCADE)
     service = models.ForeignKey(Service, verbose_name='Serviço', on_delete=models.CASCADE)
     attach_bill = models.BooleanField(default=False, verbose_name='Gerar boleto')
     active = models.BooleanField(verbose_name='Ativo', default=False)
@@ -18,7 +18,7 @@ class BillingControl(models.Model):
 
 
 class ScheduledPrice(models.Model):
-    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente')
+    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente', on_delete=models.CASCADE)
     send_date = models.DateField('Data de envio')
     duedate = models.DateField('Vencimento')
     description = models.CharField('Descrição', max_length=500)
@@ -35,7 +35,7 @@ class ScheduledPrice(models.Model):
 
 
 class BillingHistory(models.Model):
-    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente')
+    customer = models.ForeignKey(CustomerDetails, verbose_name='Cliente', on_delete=models.CASCADE)
     description = models.CharField('Descrição', max_length=500)
     value = models.FloatField('Valor', null=True, blank=True)
     date = models.DateField('Data', null=True, blank=True)
